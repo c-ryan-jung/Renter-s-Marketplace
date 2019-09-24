@@ -1,0 +1,61 @@
+We have 3 Models: User, Device, and Transaction
+
+To access our services for each model entry, use URLs with paths of /api/<model_name>/... 
+(use port 8001 and make model_name all lowercase)
+
+Examples: http://localhost:8001/api/user/2     (GET to read, POST to update)
+http://localhost:8001/api/device/create     (POST required)
+http://localhost:8001/api/transaction/3/delete    (POST required)
+
+To Create a new entry:
+http://localhost:8001/<model_name>/create
+-Calls our create<model_name> views
+-Requires a POST request and takes form data from which a new instance of that model is created and stored.
+-POST requests must contain data to populate every field of the model (except DateTimeFields, which are generated at instantiation)
+-Shows a JSON Response displaying the info of the created model instance
+
+To Read an entry:
+http://localhost:8001/<model_name>/<ID_number>
+-Calls our ViewOrUpdate<model_name> views
+-A GET request to this URL gives a JSON Response displaying the info for the model instance with that ID
+
+To Update an entry:
+http://localhost:8001/<model_name>/<ID_number>
+-Calls our ViewOrUpdate<model_name> views
+-A POST request to this URL takes the form data and updates the fields of the model instance with that ID to the input values
+-Then shows a JSON Response displaying the updated info of that model instance
+
+To Delete an entry:
+http://localhost:8001/<model_name>/<ID_number>/delete
+-Calls our Delete<model_name> views
+-A POST request deletes the instance of that model with that ID number from the database.
+-Returns an HttpResponse stating "<model_name> <ID_number> deleted."
+
+
+note: -no trailing "/" in URL (e.g. http://localhost:8001/api/user/1, not http://localhost:8001/api/user/1/)
+-Arguments given in POST requests should have keys matching the name of the model field being updated/set (see Models summary below for reference)
+    -example: curl -d "username=John" -X POST http://localhost:8001/api/user/create
+
+
+Fixture info:
+The data loaded on startup from db.json contains 6 users, 4 devices and 3 transactions
+(each ID numbered starting from 1)
+
+
+Model summary of fields:
+User - username: a string
+
+Device - owner: an int representing the ID of a User
+       - device_type: a string
+       - manufacturer: a string
+       - device_model: a string
+       - price: a float
+       - rental_details: a string
+       - is_available: a boolean
+       - updated_at: a DateTime (not needed from form data for Create)
+
+Transaction - item: an int representing the ID of a Device
+        - buyer: an int representing the ID of a User
+        - seller: an int representing the ID of a User
+        - details: a string
+        - transaction_time: a DateTime (not needed from form data for Create)

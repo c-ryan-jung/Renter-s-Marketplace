@@ -1,0 +1,189 @@
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
+from .models import Transaction, User, Device, Authenticator
+from django.urls import reverse
+import json
+from django.conf import settings
+import os
+import hmac
+import datetime
+from django.contrib.auth.hashers import check_password, make_password
+
+def index(request):
+	return HttpResponse("second test")
+
+
+def ViewOrUpdateUser(request, uniqueID):
+	if(request.method == "GET"):
+		return JsonResponse(json.loads(serializers.serialize("json", [User.objects.get(pk=uniqueID),])), safe=False )
+	if(request.method == "POST"):
+		UserBeingUpdated = User.objects.get(pk=uniqueID)
+		NewUsername = request.POST.get('username')
+		
+		if(NewUsername):
+			UserBeingUpdated.username = NewUsername
+		UserBeingUpdated.save()
+		return JsonResponse(json.loads(serializers.serialize("json", [UserBeingUpdated])), safe = False)
+
+def ViewOrUpdateDevice(request, uniqueID):
+	if(request.method == "GET"):
+		return JsonResponse(json.loads(serializers.serialize("json", [Device.objects.get(pk=uniqueID),])), safe=False )
+	if(request.method == "POST"):
+		DeviceBeingUpdated = Device.objects.get(pk=uniqueID)
+		NewOwner = request.POST.get('owner')
+		NewDeviceType = request.POST.get('device_type')
+		NewManufacturer = request.POST.get('manufacturer')
+		NewDeviceModel = request.POST.get("device_model")
+		NewPrice = request.POST.get("price")
+		NewRentalDetails = request.POST.get("rental_details")
+		NewIsAvailable = request.POST.get("is_available")
+
+
+		if(NewOwner):
+			DeviceBeingUpdated.owner = User.objects.get(pk=NewOwner)
+		if(NewDeviceType):
+			DeviceBeingUpdated.device_type = NewDeviceType
+		if(NewManufacturer):
+			DeviceBeingUpdated.manufacturer = NewManufacturer
+		if(NewDeviceModel):
+			DeviceBeingUpdated.device_model = NewDeviceModel
+		if(NewPrice):
+			DeviceBeingUpdated.price = NewPrice
+		if(NewRentalDetails):
+			DeviceBeingUpdated.rental_details = NewRentalDetails
+		if(NewIsAvailable):
+			DeviceBeingUpdated.is_available = NewIsAvailable
+		
+		DeviceBeingUpdated.save()
+		return JsonResponse(json.loads(serializers.serialize("json", [DeviceBeingUpdated])), safe = False)
+
+def ViewOrUpdateTransaction(request, uniqueID):
+	if(request.method == "GET"):
+		return JsonResponse(json.loads(serializers.serialize("json", [Transaction.objects.get(pk=uniqueID),])), safe=False )
+	if(request.method == "POST"):
+		TransactionBeingUpdated = Transaction.objects.get(pk=uniqueID)
+		NewItem = request.POST.get('item')
+		NewBuyer = request.POST.get('buyer')
+		NewSeller = request.POST.get('seller')
+		NewDetails = request.POST.get('details')
+
+		if(NewItem):
+			TransactionBeingUpdated.item = Device.objects.get(pk=NewItem)
+		if(NewBuyer):
+			TransactionBeingUpdated.buyer = User.objects.get(pk=NewBuyer)
+		if(NewSeller):
+			TransactionBeingUpdated.seller = User.objects.get(pk=NewSeller)
+		if(NewDetails):
+			TransactionBeingUpdated.details = NewDetails
+		
+		TransactionBeingUpdated.save()
+		
+		return JsonResponse(json.loads(serializers.serialize("json", [TransactionBeingUpdated])), safe = False)
+
+
+
+def DeleteUser(request, uniqueID):
+	if(request.method == "POST"):
+		UserBeingDeleted = User.objects.get(pk=uniqueID)
+		UserBeingDeleted.delete()
+		return HttpResponse("user " + str(uniqueID) + " deleted")
+
+
+def DeleteDevice(request, uniqueID):
+	if(request.method == "POST"):
+		DeviceBeingDeleted = Device.objects.get(pk=uniqueID)
+		DeviceBeingDeleted.delete()
+		return HttpResponse("device " + str(uniqueID) + " deleted")
+
+
+def DeleteTransaction(request, uniqueID):
+	if(request.method == "POST"):
+		TransactionBeingDeleted = Transaction.objects.get(pk=uniqueID)
+		TransactionBeingDeleted.delete()
+		return HttpResponse("transaction " + str(uniqueID) + " deleted")
+
+def createUser(request):
+    if(request.method == "POST"):
+        try:
+            NewUsername = request.POST.get('username')
+            if User.objects.filter(username = NewUsername).exists():
+                return HttpResponse("Error - username already taken")
+            else:
+                NewPassword = request.POST['password']
+                NewPassword = make_password(NewPassword)
+                new_user = User(username = NewUsername, password=NewPassword)
+                new_user.save()
+                return HttpResponse("success")
+        except: 
+            return HttpResponse("Error - invalid or incomplete form data")
+
+def createDevice(request):
+    if(request.method == "POST"):
+        try:
+            auth = request.POST['auth']
+            owner_auth = Authenticator.objects.get(authenticator=auth)
+            NewOwner = owner_auth.user_id
+            NewDeviceType = request.POST['device_type']
+            NewManufacturer = request.POST['manufacturer']
+            NewDeviceModel = request.POST["device_model"]
+            NewPrice = request.POST["price"]
+            NewRentalDetails = request.POST["rental_details"]
+            NewIsAvailable = request.POST["is_available"]
+            new_device = Device(owner = NewOwner, device_type = NewDeviceType, manufacturer = NewManufacturer, device_model = NewDeviceModel, price = NewPrice, rental_details = NewRentalDetails, is_available = NewIsAvailable)
+            new_device.save()
+            new_listing = JsonResponse(json.loads(serializers.serialize("json", [new_device])), safe = False)
+            return HttpResponse("success")
+            return JsonResponse(json.loads(serializers.serialize("json", [new_device])), safe = False)
+        except ObjectDoesNotExist:
+            return HttpResponse("Invalid Authenticator")
+        except: 
+            return HttpResponse("Error - invalid or incomplete form data")
+
+def createTransaction(request):
+	if(request.method == "POST"):
+		try:
+			NewItem = request.POST['item']
+			NewBuyer = request.POST['buyer']
+			NewSeller = request.POST['seller']
+			NewDetails = request.POST['details']
+
+			new_transaction = Transaction(item = Device.objects.get(pk=NewItem), buyer = User.objects.get(pk=NewBuyer), details = NewDetails, seller = User.objects.get(pk=NewSeller))
+			new_transaction.save()
+			return JsonResponse(json.loads(serializers.serialize("json", [new_transaction])), safe = False)
+		except: 
+			return HttpResponse("Error - invalid or incomplete form data")
+
+def all_devices(request):
+	return JsonResponse(json.loads(serializers.serialize("json", Device.objects.all())), safe = False)
+
+def CreateAuthentication(request):
+	if(request.method == "POST"):
+		username = request.POST['username']
+		password = request.POST['password']
+		try:
+			user = User.objects.get(username=username)
+			authenticator = hmac.new(
+				key = settings.SECRET_KEY.encode('utf-8'),
+				msg=os.urandom(32),
+				digestmod='sha256',
+			).hexdigest()
+			if check_password(password, user.password):
+				
+				auth = Authenticator(
+					user_id = user, authenticator=authenticator)
+				auth.save()
+				return HttpResponse(authenticator)
+			else:
+				return HttpResponse("Incorrect Password or Username")
+		except ObjectDoesNotExist:
+			return HttpResponse("Incorrect Password or Username")
+
+def logout(request):
+	if(request.method == "POST"):
+		authorization = request.POST.get('auth')
+		authDelete = Authenticator.get(authenticator = authorization)
+		thing = authDelete.authenticator
+		authDelete.delete()
+		return HttpResponse(thing)

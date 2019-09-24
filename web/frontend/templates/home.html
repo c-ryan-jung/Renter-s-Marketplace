@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <!-- Navbar Code-->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="/">TechRent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">   
+            <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/search">Search</a>
+            </li>
+            {% if auth %}
+            <li class="nav-item">
+                <a class="nav-link" href="/create_listing">Add Listing</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            {% endif %}
+            </ul>
+        </div>  
+    </nav>
+    <!-- end of Navbar Code-->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Welcome to TechRent!</h1>
+            <h3>All Devices</h3>
+            <h5>Sorted by Most Recently Posted</h5>
+            <ul>
+                {% for item in date_order %}
+                <li><a href="/details/{{ item.pk }}">{{ item.fields.device_type }}: {{ item.fields.manufacturer }} {{ item.fields.device_model }}<br/>
+                Price: {{ item.fields.price }}</a></li>
+                {% endfor %}
+            </ul>
+            <h5>Sorted by Ascending Price</h3>
+            <ul>
+                {% for item in price_order %}
+                <li><a href="/details/{{ item.pk }}">{{ item.fields.device_type }}: {{ item.fields.manufacturer }} {{ item.fields.device_model }}<br/>
+                Price: {{ item.fields.price }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

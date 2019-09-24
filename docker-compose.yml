@@ -1,0 +1,169 @@
+models:
+  image: tp33/django
+  container_name: models
+  external_links:
+    - mysql:db
+  volumes:
+    - ./techrent:/app
+  ports:
+    - "8001:8000"
+  command: bash -c "python manage.py migrate && python manage.py loaddata app/fixtures/db.json && mod_wsgi-express start-server --working-directory /app --reload-on-changes techrent/wsgi.py"
+
+exp:
+  image: tp33/django
+  container_name: exp
+  links:
+    - models:models-api
+    - es:es
+    - kafka:kafka
+  ports:
+    - "8002:8000"
+  volumes:
+    - ./exp:/app
+  command: "mod_wsgi-express start-server --reload-on-changes exp/wsgi.py"
+
+web1:
+  image: tp33/django
+  container_name: web1
+  links:
+    - exp:exp-api
+  volumes:
+    - ./web:/app
+  command: "mod_wsgi-express start-server --reload-on-changes web/wsgi.py"
+
+web2:
+  image: tp33/django
+  container_name: web2
+  links:
+    - exp:exp-api
+  volumes:
+    - ./web:/app
+  command: "mod_wsgi-express start-server --reload-on-changes web/wsgi.py"
+
+web3:
+  image: tp33/django
+  container_name: web3
+  links:
+    - exp:exp-api
+  volumes:
+    - ./web:/app
+  command: "mod_wsgi-express start-server --reload-on-changes web/wsgi.py"
+
+
+kafka:
+   image: spotify/kafka
+   container_name: kafka
+   environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+   hostname: kafka
+   
+es:
+   image: elasticsearch:2.0
+   container_name: es
+   ports:
+      - "9200:9200"
+
+batch:
+   image: tp33/django
+   container_name: batch
+   links:
+      - kafka:kafka
+      - es:es
+   volumes:
+      - ./batch:/app
+   command: python search_script.py
+
+batch2:
+   image: tp33/django
+   container_name: batch2
+   links:
+      - kafka:kafka
+   volumes:
+      - ./data:/app
+   command: python access_log_script.py
+
+selenium-chrome:
+  shm_size: 1G
+  image: selenium/standalone-chrome
+  container_name: selenium-chrome
+  links:
+    - web1:web1
+  ports:
+    - "4444:4444"
+
+selenium-test:
+  shm_size: 1G
+  image: tp33/django
+  container_name: selenium-test
+  links:
+    - selenium-chrome:selenium-chrome
+    - web1:web1
+  volumes:
+    - ./selenium:/app
+  command: bash -c "pip install selenium && python selenium_script.py"
+
+haproxy:
+  image: haproxy
+  container_name: haproxy
+  links:
+    - web1:web1
+    - web2:web2
+    - web3:web3
+  volumes:
+    - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  ports:
+    - "8000:8000"
+
+
+spark-master:
+  image: gettyimages/spark
+  command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
+  container_name: spark-master
+  hostname: spark-master
+  environment:
+    MASTER: spark://spark-master:7077
+    SPARK_CONF_DIR: /conf
+  expose:
+    - 7001
+    - 7002
+    - 7003
+    - 7004
+    - 7005
+    - 7006
+    - 7077
+    - 6066
+  links:
+    - models:models-api
+  ports:
+    - 4040:4040
+    - 6066:6066
+    - 7077:7077
+    - 8080:8080
+  volumes:
+    - ./data:/tmp/data
+
+spark-worker:
+  image: gettyimages/spark
+  command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+  container_name: spark-worker
+  hostname: spark-worker
+  environment:
+    SPARK_CONF_DIR: /conf
+    SPARK_WORKER_CORES: 2
+    SPARK_WORKER_MEMORY: 512m
+    SPARK_WORKER_PORT: 8881
+    SPARK_WORKER_WEBUI_PORT: 8081
+  links:
+    - spark-master
+  expose:
+    - 7012
+    - 7013
+    - 7014
+    - 7015
+    - 7016
+    - 8881
+  ports:
+    - 8081:8081
+  volumes:
+    - ./data:/tmp/data

@@ -1,0 +1,508 @@
+[
+{
+    "model": "app.user",
+    "pk": 1,
+    "fields": {
+        "username": "ryan",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.user",
+    "pk": 2,
+    "fields": {
+        "username": "john",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.user",
+    "pk": 3,
+    "fields": {
+        "username": "avi",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.user",
+    "pk": 4,
+    "fields": {
+        "username": "john",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.user",
+    "pk": 5,
+    "fields": {
+        "username": "dave",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.user",
+    "pk": 6,
+    "fields": {
+        "username": "asdf",
+        "password": "pbkdf2_sha256$120000$RJKeTiKlRIYG$p+SbDPcFs/BTFtJ2H2ylpF0cUlsWusBOO+Mkcv3n4II="
+    }
+},
+{
+    "model": "app.device",
+    "pk": 1,
+    "fields": {
+        "owner": 1,
+        "device_type": "drone",
+        "manufacturer": "man",
+        "device_model": "test",
+        "price": 100.0,
+        "rental_details": "weekly rental",
+        "is_available": true,
+        "updated_at": "2019-02-06T02:05:33.613Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 2,
+    "fields": {
+        "owner": 4,
+        "device_type": "Drone",
+        "manufacturer": "DJI",
+        "device_model": "Mavic",
+        "price": 50.0,
+        "rental_details": "weekly rental",
+        "is_available": true,
+        "updated_at": "2019-02-06T22:03:08.755Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 3,
+    "fields": {
+        "owner": 6,
+        "device_type": "Scooter",
+        "manufacturer": "Razor",
+        "device_model": "ABC",
+        "price": 25.0,
+        "rental_details": "Daily rental",
+        "is_available": false,
+        "updated_at": "2019-02-06T22:03:37.945Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 4,
+    "fields": {
+        "owner": 3,
+        "device_type": "Drone",
+        "manufacturer": "DJI",
+        "device_model": "Phantom",
+        "price": 100.0,
+        "rental_details": "Event rentals",
+        "is_available": true,
+        "updated_at": "2019-02-06T22:04:09.626Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 5,
+    "fields": {
+        "owner": 3,
+        "device_type": "VR Headset",
+        "manufacturer": "Oculus",
+        "device_model": "Rift",
+        "price": 200.0,
+        "rental_details": "For Sale",
+        "is_available": true,
+        "updated_at": "2019-02-06T22:05:09.626Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 6,
+    "fields": {
+        "owner": 5,
+        "device_type": "Drone",
+        "manufacturer": "DJI",
+        "device_model": "Phantom",
+        "price": 70.0,
+        "rental_details": "Event rentals",
+        "is_available": true,
+        "updated_at": "2019-02-06T22:04:09.626Z"
+    }
+},
+{
+    "model": "app.device",
+    "pk": 7,
+    "fields": {
+        "owner": 3,
+        "device_type": "Scooter",
+        "manufacturer": "Razor",
+        "device_model": "Thingie",
+        "price": 10.0,
+        "rental_details": "Any rentals",
+        "is_available": true,
+        "updated_at": "2019-02-06T22:04:09.616Z"
+    }
+},
+{
+    "model": "app.transaction",
+    "pk": 1,
+    "fields": {
+        "item": 1,
+        "buyer": 2,
+        "seller": 1,
+        "details": "testing",
+        "transaction_time": "2019-02-06T02:06:31.320Z"
+    }
+},
+{
+    "model": "app.transaction",
+    "pk": 2,
+    "fields": {
+        "item": 4,
+        "buyer": 1,
+        "seller": 3,
+        "details": "for a wedding",
+        "transaction_time": "2019-02-06T22:04:53.231Z"
+    }
+},
+{
+    "model": "app.transaction",
+    "pk": 3,
+    "fields": {
+        "item": 3,
+        "buyer": 5,
+        "seller": 6,
+        "details": "for fun",
+        "transaction_time": "2019-02-06T22:05:35.099Z"
+    }
+},
+{
+    "model": "app.recommendation",
+    "pk": 1,
+    "fields": {
+        "item_id": "1",
+        "recommended_items": "2 3"
+    }
+},
+{
+    "model": "app.recommendation",
+    "pk": 2,
+    "fields": {
+        "item_id": "2",
+        "recommended_items": "1 3"
+    }
+},
+{
+    "model": "app.recommendation",
+    "pk": 3,
+    "fields": {
+        "item_id": "3",
+        "recommended_items": "1 2"
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$120000$3SgquTRXuNLz$7JesZWc3JQ9jTaqPO3t8SK/qV7PUYO8hoWXbmuHxSq4=",
+        "last_login": "2019-02-06T01:31:38.376Z",
+        "is_superuser": true,
+        "username": "rpk2kn",
+        "first_name": "",
+        "last_name": "",
+        "email": "rpk2kn@virginia.edu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2019-02-06T01:31:10.046Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$120000$XMi7h9S2xJmA$e5DN+XUoUo5jUCq9wLJAyL//7+AU0iM47OZvuyUhVNk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "abc1de",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2019-02-06T01:32:49.656Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$120000$O88VYysKlavj$V2WEZxTRDH9ns9s+G9SzgL5N9uto5ir8mNPuKViOWhM=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "email": "rpk2kn@virginia.edu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2019-02-06T02:09:05.457Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2019-02-06T01:32:49.801Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "auth",
+            "user"
+        ],
+        "object_id": "2",
+        "object_repr": "abc1de",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2019-02-06T02:04:55.341Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "1",
+        "object_repr": "ryan",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2019-02-06T02:05:33.616Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "device"
+        ],
+        "object_id": "1",
+        "object_repr": "test",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2019-02-06T02:06:04.009Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "2",
+        "object_repr": "john",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2019-02-06T02:06:31.325Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "transaction"
+        ],
+        "object_id": "1",
+        "object_repr": "Transaction object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2019-02-06T22:02:05.525Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "3",
+        "object_repr": "avi",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2019-02-06T22:02:11.432Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "4",
+        "object_repr": "john",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2019-02-06T22:02:18.437Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "5",
+        "object_repr": "dave",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+        "action_time": "2019-02-06T22:02:22.114Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "user"
+        ],
+        "object_id": "6",
+        "object_repr": "asdf",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+        "action_time": "2019-02-06T22:03:08.761Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "device"
+        ],
+        "object_id": "2",
+        "object_repr": "Mavic",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+        "action_time": "2019-02-06T22:03:37.957Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "device"
+        ],
+        "object_id": "3",
+        "object_repr": "ABC",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2019-02-06T22:04:09.629Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "device"
+        ],
+        "object_id": "4",
+        "object_repr": "Phantom",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2019-02-06T22:04:53.237Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "transaction"
+        ],
+        "object_id": "6",
+        "object_repr": "Transaction object (6)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+        "action_time": "2019-02-06T22:05:35.103Z",
+        "user": [
+            "rpk2kn"
+        ],
+        "content_type": [
+            "app",
+            "transaction"
+        ],
+        "object_id": "7",
+        "object_repr": "Transaction object (7)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+}
+]

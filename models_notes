@@ -1,0 +1,36 @@
+(Django model of) User
+#unique id
+#list of generic devices they sell (eg a specific seller might sell electric scooters, drones, wedding photography services etc) (empty if not a seller)
+#list of specific models of things they have available to rent (eg Razor E200 electric scooter, DJI Mavic Air drone)
+#list of items they currently are holding that they "bought" (empty if they don't currently have anything)
+#list of specific previous transactions (specific object bought/sold, feedback on whether it was returned broken)
+
+(Django model of) Generic type of device to rent (eg generic drone):
+unique ID
+# number of models
+# numberof unique items
+# number of unique items available
+method to rent one (reduce number available by 1)
+
+(Django model of) Specific Device model (eg a Razor E200 electric scooter):
+#Unique ID
+#list of owners who rent this model
+#Number available
+#list of spefic objects that exist in our system for this
+method to rent specific model at the cheapest offer, make it so one less is available 
+
+
+(Django model of) Specific Actual Device (this corresponds to a specific real life instance of a specific electric scooter). This model not visible to buyers since they don't need to know which specific object they are receiving, only what type it is. Visible to sellers so they can keep track of who has their items.
+#Unique ID to differentiate from others of the same model
+#One specific owner
+#Who is it with (possible options: with owner and not available for rent; with owner and available for rent; with a renter (include renterID of which one))
+
+
+
+
+(Django model of) Transaction/Receipt
+#dates sent out by owner
+#dates received back by owner (blank if still currently out)
+#price
+#id of buyer
+#id of owner
